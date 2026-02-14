@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>💌 De Aureliano para Luzia Morais, minha amada</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            font-family: -apple-system, 'Helvetica Neue', 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(145deg, #f9e3e0 0%, #fbc2c2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+
+        /* cartão principal – estilo iOS */
+        .card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 44px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15), 0 6px 12px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            padding: 28px 20px 32px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            transition: all 0.2s ease;
+        }
+
+        .header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 2.1rem;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #b23b3b, #d45e5e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 4px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            color: #6b4e4e;
+            font-weight: 400;
+            padding: 0 12px;
+            text-align: center;
+            border-bottom: 2px dashed #e3a1a1;
+            padding-bottom: 10px;
+        }
+
+        .historia-mini {
+            background-color: #fceaea;
+            padding: 16px 14px;
+            border-radius: 28px;
+            margin-bottom: 24px;
+            border: 1px solid #f8cdcd;
+            box-shadow: inset 0 1px 4px rgba(255, 255, 255, 0.8);
+        }
+
+        .historia-mini p {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #4d3a3a;
+            font-weight: 450;
+        }
+
+        .historia-mini p span {
+            font-weight: 600;
+            color: #b34242;
+        }
+
+        /* quiz perguntas */
+        .quiz-container {
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+            margin: 24px 0 16px;
+        }
+
+        .pergunta {
+            background: white;
+            border-radius: 28px;
+            padding: 16px 18px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+            border: 1px solid #ffd5d5;
+        }
+
+        .pergunta-texto {
+            font-weight: 600;
+            font-size: 1.05rem;
+            margin-bottom: 14px;
+            color: #2d1f1f;
+            padding-left: 6px;
+        }
+
+        .opcoes {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .opcao {
+            background: #f9f1f1;
+            border-radius: 40px;
+            padding: 14px 18px;
+            border: 1.5px solid transparent;
+            transition: all 0.15s;
+            color: #3e2e2e;
+            font-weight: 480;
+            font-size: 1rem;
+            box-shadow: 0 2px 3px rgba(0, 0, 0, 0.02);
+            cursor: pointer;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        .opcao.selected {
+            background: #ffd9d9;
+            border-color: #c76f6f;
+            color: #941e1e;
+            font-weight: 500;
+            box-shadow: 0 4px 8px rgba(200, 80, 80, 0.15);
+        }
+
+        /* feedback de certo/errado (sutil) */
+        .feedback {
+            font-size: 0.9rem;
+            margin-top: 6px;
+            padding-left: 8px;
+            min-height: 22px;
+            color: #4f7373;
+        }
+
+        .counter {
+            text-align: center;
+            font-size: 0.95rem;
+            background: rgba(242, 215, 215, 0.7);
+            padding: 10px;
+            border-radius: 40px;
+            color: #532b2b;
+            font-weight: 500;
+            margin: 10px 0 5px;
+        }
+
+        .btn-revelar {
+            background: #b23b3b;
+            border: none;
+            width: 100%;
+            padding: 18px 12px;
+            border-radius: 50px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: white;
+            letter-spacing: 0.5px;
+            box-shadow: 0 12px 18px -8px rgba(150, 40, 40, 0.4);
+            transition: all 0.2s;
+            cursor: pointer;
+            margin-top: 12px;
+            border: 1px solid #ffb6b6;
+        }
+
+        .btn-revelar:active {
+            transform: scale(0.97);
+            background: #9b2e2e;
+            box-shadow: 0 5px 12px rgba(150, 40, 40, 0.4);
+        }
+
+        .btn-revelar:disabled {
+            opacity: 0.45;
+            transform: none;
+            box-shadow: none;
+            background: #b78a8a;
+            pointer-events: none;
+        }
+
+        /* Área da carta surpresa (final) */
+        .carta-final {
+            margin-top: 30px;
+            background: rgba(255, 240, 240, 0.9);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 40px;
+            padding: 22px 18px;
+            border: 2px solid #f3baba;
+            box-shadow: 0 10px 20px rgba(160, 70, 70, 0.2);
+            transition: opacity 0.5s ease;
+            color: #382626;
+        }
+
+        .carta-final h2 {
+            font-size: 1.9rem;
+            font-weight: 600;
+            color: #af3f3f;
+            text-align: center;
+            margin-bottom: 14px;
+            line-height: 1.2;
+        }
+
+        .carta-final .declaracao {
+            font-size: 0.98rem;
+            line-height: 1.7;
+            white-space: pre-line;
+            color: #2d1e1e;
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 6px;
+        }
+
+        .creditos {
+            margin-top: 18px;
+            font-size: 0.85rem;
+            color: #805c5c;
+            border-top: 1px dashed #dba9a9;
+            padding-top: 15px;
+            text-align: center;
+            font-style: italic;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .foto-placeholder {
+            width: 60px;
+            height: 60px;
+            border-radius: 30px;
+            background: #f1c1c1;
+            margin: 10px auto 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            border: 2px solid white;
+        }
+
+        /* iOS style extras */
+        .attribution {
+            font-size: 0.75rem;
+            color: #a08181;
+            text-align: center;
+            margin-top: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="card" id="appCard">
+        <div class="header">
+            <div class="foto-placeholder">💞</div>
+            <h1>MILA ✦ AURELIANO</h1>
+            <p>o enigma do nosso amor</p>
+        </div>
+
+        <!-- pequeno resumo da história (para contextualizar) -->
+        <div class="historia-mini">
+            <p><span>Ela (Mila)</span> no Insta, um story sobre um rapaz que olhava… <span>Ele (Aureliano)</span> respondeu para ajudar, porque também olhava para outra. Conversa longa, um tempo sem se falar, depois voltaram. Hoje: ela na Alemanha, ele em Angola. O resto? é enigma.</p>
+        </div>
+
+        <!-- área do quiz -->
+        <div id="quizArea">
+            <div class="quiz-container" id="perguntasContainer"></div>
+
+            <div class="counter" id="progressText">0/5 respostas certas</div>
+
+            <button class="btn-revelar" id="btnRevelar" disabled>✨ revelar mensagem secreta ✨</button>
+        </div>
+
+        <!-- carta escondida inicialmente -->
+        <div id="cartaSurpresa" class="carta-final hidden">
+            <h2>💌 Para a minha Milusia</h2>
+            <div class="declaracao" id="declaracaoTexto">
+                <!-- preenchido por JS com a mensagem linda do Aureliano -->
+            </div>
+            <div class="creditos">
+                ❤️  Aureliano · Angola  <br>  🕊️  para Mila · Alemanha  <br>  "para sempre, gatinha"
+            </div>
+        </div>
+
+        <div class="attribution">deslize e responda com o coração 💋</div>
+    </div>
+
+    <script>
+        (function() {
+            // ----- DADOS DO ENIGMA (personalizado com a história) -----
+            const perguntas = [
+                {
+                    texto: "1️⃣ Onde nos vimos pela primeira vez?",
+                    opcoes: ["Facebook", "WhatsApp", "Instagram", "TikTok"],
+                    correta: "Instagram"
+                },
+                {
+                    texto: "2️⃣ O que eu (Aureliano) respondi no story da Mila?",
+                    opcoes: ["Um elogio", "Uma ajuda / conselho", "Uma piada", "Um meme"],
+                    correta: "Uma ajuda / conselho"
+                },
+                {
+                    texto: "3️⃣ Como se chama o que houve entre o 'falar' e o 'namorar'?",
+                    opcoes: ["BRIGA", "PAUSA", "ESQUECIMENTO", "DISTÂNCIA"],
+                    correta: "PAUSA"
+                },
+                {
+                    texto: "4️⃣ Ela está na Alemanha; eu estou em...",
+                    opcoes: ["Brasil", "Portugal", "Angola", "Moçambique"],
+                    correta: "Angola"
+                },
+                {
+                    texto: "5️⃣ Mesmo longe, o que sinto por ti e é a palavra que completa: 'O nosso amor é ________'?",
+                    opcoes: ["GRANDE", "FORTE", "ETERNAL", "AMOR"],
+                    correta: "AMOR"   // ela vai perceber a charada
+                }
+            ];
+
+            // mensagem final (a declaração do Aureliano)
+            const cartaMensagem = `Meu amor, eu te amo de todo o meu coração… com a minha alma inteira.
+
+Tu és tão linda, tão sábia, tão incrível… às vezes eu olho para ti e fico pensando como é que tive tanta sorte assim. Desde o dia em que nos conhecemos, eu descobri o que é o verdadeiro amor. Antes de ti eu achava que sabia amar, mas contigo eu senti — e sentir é diferente.
+
+Eu te quero para sempre, minha princesa. Para sempre mesmo.
+
+Todos os dias eu penso no quanto eu seria capaz de fazer por ti… e não existe limite. Se fosse preciso, eu daria a minha própria vida por ti sem pensar duas vezes, porque tu és a minha mulher, a minha companheira, a minha escolha todos os dias.
+
+Tu és e sempre serás a minha amada.
+
+Eu amo o teu jeito… o jeito como falas, como ages, como sorris. Amo a tua luz. Tu és o meu sol, Milusia. Iluminas os meus dias mesmo quando eu estou nas minhas fases mais escuras.
+
+És perfeita por fora, mas o que mais me encanta é o que tens por dentro. O teu coração, a tua essência, a tua mente… é isso que me prende, que me faz ter certeza que eu vou casar contigo. Eu vou casar contigo, porque tu és a mulher da minha vida.
+
+Queria poder te dar algo ainda mais especial do que palavras… queria estar agora contigo, te abraçar e te entregar as tuas flores preferidas, lilies, e ver o teu sorriso. E eu prometo que vou fazer isso num dos próximos presentes, porque tu mereces o mundo.
+
+Tu és minha para sempre, gatinha. E eu sou teu. De corpo, coração e alma.
+
+Eu te amo infinitamente ❤️`;
+
+            // ----- estado das respostas do usuário -----
+            let respostasSelecionadas = new Array(perguntas.length).fill(null); // armazena o texto da opção escolhida
+            let acertos = new Array(perguntas.length).fill(false);
+
+            const container = document.getElementById('perguntasContainer');
+            const progressEl = document.getElementById('progressText');
+            const btnRevelar = document.getElementById('btnRevelar');
+            const quizArea = document.getElementById('quizArea');
+            const cartaSurpresa = document.getElementById('cartaSurpresa');
+            const declaracaoDiv = document.getElementById('declaracaoTexto');
+
+            // função para atualizar contador e estado do botão
+            function atualizarProgresso() {
+                const totalAcertos = acertos.filter(v => v === true).length;
+                progressEl.innerText = `${totalAcertos}/${perguntas.length} respostas certas`;
+
+                if (totalAcertos === perguntas.length) {
+                    btnRevelar.disabled = false;
+                } else {
+                    btnRevelar.disabled = true;
+                }
+            }
+
+            // verifica se a opção clicada é a correta e atualiza vetores
+            function processarClique(indicePergunta, opcaoTexto, elementoOpcao) {
+                // Se já houver uma opção selecionada nesta pergunta, remover a classe 'selected' de todas
+                const pergDiv = document.querySelectorAll('.pergunta')[indicePergunta];
+                const opcoesDiv = pergDiv.querySelectorAll('.opcao');
+                opcoesDiv.forEach(op => op.classList.remove('selected'));
+
+                // Marca a opção clicada
+                elementoOpcao.classList.add('selected');
+
+                // Guarda a resposta escolhida
+                respostasSelecionadas[indicePergunta] = opcaoTexto;
+
+                // Verifica se é igual à correta
+                const correta = perguntas[indicePergunta].correta;
+                const foiAcerto = (opcaoTexto === correta);
+                acertos[indicePergunta] = foiAcerto;
+
+                // Feedback visual extra via data (não obrigatório, só para deixar mais claro)
+                // Atualiza contador
+                atualizarProgresso();
+            }
+
+            // Renderiza as perguntas dinamicamente
+            function renderQuiz() {
+                let html = '';
+                for (let i = 0; i < perguntas.length; i++) {
+                    const p = perguntas[i];
+                    html += `<div class="pergunta" data-q="${i}">`;
+                    html += `<div class="pergunta-texto">${p.texto}</div>`;
+                    html += `<div class="opcoes">`;
+
+                    for (let op of p.opcoes) {
+                        // verifica se esta opção está selecionada (para manter após render)
+                        const selectedClass = (respostasSelecionadas[i] === op) ? ' selected' : '';
+                        html += `<div class="opcao${selectedClass}" data-op="${op}">${op}</div>`;
+                    }
+                    html += `</div>`;
+                    html += `<div class="feedback" id="fb-${i}"></div>`;
+                    html += `</div>`;
+                }
+                container.innerHTML = html;
+
+                // Adiciona listeners para cada opção
+                document.querySelectorAll('.pergunta').forEach((perguntaDiv, idx) => {
+                    const opcoes = perguntaDiv.querySelectorAll('.opcao');
+                    opcoes.forEach(op => {
+                        op.addEventListener('click', (e) => {
+                            const opcaoTexto = op.getAttribute('data-op');
+                            processarClique(idx, opcaoTexto, op);
+                        });
+                    });
+                });
+            }
+
+            // Inicializa o quiz
+            renderQuiz();
+            atualizarProgresso();
+
+            // Evento do botão revelar
+            btnRevelar.addEventListener('click', (e) => {
+                e.preventDefault();
+
+                // Verifica mais uma vez se todos os acertos estão ok
+                if (acertos.every(v => v === true)) {
+                    // Esconder a área do quiz
+                    quizArea.classList.add('hidden');
+                    // Mostrar a carta surpresa
+                    declaracaoDiv.innerText = cartaMensagem;
+                    cartaSurpresa.classList.remove('hidden');
+
+                    // Rolagem suave até a carta (opcional)
+                    setTimeout(() => {
+                        cartaSurpresa.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    }, 100);
+                } else {
+                    // Segurança: se por algum mal funcionamento o botão estiver habilitado mesmo sem todas certas, desabilita
+                    btnRevelar.disabled = true;
+                    alert('Ainda não acertaste todas as perguntas, meu amor. Tenta mais! 💪');
+                }
+            });
+
+            // Bónus: se ela quiser recomeçar (clique no cabeçalho ou assim? mas vou deixar simples)
+            // Mas pode ser que ela queira ver o quiz novamente? para isso pode dar refresh. mas vou colocar um reset invisível?
+            // Vou adicionar um reset manual caso a carta seja exibida e ela queira rever o enigma? 
+            // Como é algo íntimo, vou deixar sem reset forçado, mas se quiser recomeçar é só recarregar a página.
+            // Um toque especial: duplo clique no header reseta (escondido)
+            const headerDiv = document.querySelector('.header');
+            headerDiv.addEventListener('dblclick', () => {
+                // reset apenas se a carta estiver visível
+                if (!cartaSurpresa.classList.contains('hidden')) {
+                    // reinicia tudo
+                    respostasSelecionadas = new Array(perguntas.length).fill(null);
+                    acertos = new Array(perguntas.length).fill(false);
+                    quizArea.classList.remove('hidden');
+                    cartaSurpresa.classList.add('hidden');
+                    renderQuiz();
+                    atualizarProgresso();
+                }
+            });
+        })();
+    </script>
+</body>
+</html>
